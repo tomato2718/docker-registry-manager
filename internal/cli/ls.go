@@ -5,15 +5,15 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	env "github.com/tomato2718/docker-registry-manager/internal/env"
 	"github.com/tomato2718/docker-registry-manager/internal/httpclient"
 )
 
 var lsCmd = &cobra.Command{
-	Use:   "ls",
+	Use:   "ls <registry url>",
 	Short: "List all images",
+	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		res, err := httpclient.Get(env.RegistryUrl)
+		res, err := httpclient.Get(args[0])
 		if err != nil {
 			fmt.Println(err.Error())
 			os.Exit(1)
