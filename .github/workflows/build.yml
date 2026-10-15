@@ -46,3 +46,21 @@ jobs:
         with:
           name: drm-${{ matrix.goos }}-${{ matrix.goarch }}
           path: dist/drm-${{ matrix.goos }}-${{ matrix.goarch }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          pattern: drm-*
+          path: dist
+          merge-multiple: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/drm-*
+          generate_release_notes: true
